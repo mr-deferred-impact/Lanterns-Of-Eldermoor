@@ -1,0 +1,89 @@
+[gd_resource type="Theme" format=3 uid="uid://cybulcohkp5ru"]
+
+[ext_resource type="Texture2D" uid="uid://10inydiacfqx" path="res://assets/kenney/ui_adventure_pack/button_grey.png" id="1_y1qaj"]
+[ext_resource type="Texture2D" uid="uid://q0yhhaxeo4s3" path="res://assets/kenney/ui_adventure_pack/button_brown.png" id="2_cdi7h"]
+[ext_resource type="Texture2D" uid="uid://bf71vruf554b8" path="res://assets/kenney/ui_adventure_pack/panel_brown_corners_a.png" id="3_cdi7h"]
+[ext_resource type="Texture2D" uid="uid://c15ahqejsietf" path="res://assets/kenney/ui_adventure_pack/checkbox_brown_checked.png" id="3_wx876"]
+[ext_resource type="Texture2D" uid="uid://ksthe2gvvn5u" path="res://assets/kenney/ui_adventure_pack/checkbox_beige_empty.png" id="4_dqeof"]
+[ext_resource type="Texture2D" uid="uid://drpk00stowmqh" path="res://assets/kenney/ui_adventure_pack/progress_red_small_border.png" id="5_aw4ft"]
+[ext_resource type="Texture2D" uid="uid://bsi8cdiypyb15" path="res://assets/kenney/ui_adventure_pack/progress_blue_border.png" id="5_dqeof"]
+[ext_resource type="Texture2D" uid="uid://bx3pgh7m1wawu" path="res://assets/kenney/ui_adventure_pack/progress_green_border.png" id="5_v7jsg"]
+[ext_resource type="Texture2D" uid="uid://bw4qeh0isnlc3" path="res://assets/kenney/ui_adventure_pack/progress_blue_small_border.png" id="6_ddo6h"]
+[ext_resource type="FontFile" uid="uid://b6cvhycnku71b" path="res://assets/kenney/kenney_fonts/Kenney Mini Square Mono.ttf" id="10_ddo6h"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bcwc5"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("1_y1qaj")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tdsfo"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("2_cdi7h")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dqeof"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wx876"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bcwc5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v7jsg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v7jsg"]
+texture = ExtResource("5_v7jsg")
+texture_margin_left = 4.0
+texture_margin_top = 6.0
+texture_margin_right = 4.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l6cm7"]
+texture = ExtResource("5_dqeof")
+texture_margin_left = 4.0
+texture_margin_top = 6.0
+texture_margin_right = 4.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wx876"]
+texture = ExtResource("3_cdi7h")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[resource]
+default_font = ExtResource("10_ddo6h")
+default_font_size = 20
+Button/colors/font_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+Button/colors/font_hover_color = Color(0.8828125, 0.8828125, 0.8828125, 1)
+Button/styles/hover = SubResource("StyleBoxTexture_bcwc5")
+Button/styles/normal = SubResource("StyleBoxTexture_tdsfo")
+CheckBox/colors/font_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+CheckBox/colors/font_focus_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+CheckBox/colors/font_hover_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+CheckBox/colors/font_hover_pressed_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+CheckBox/colors/font_pressed_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+CheckBox/icons/checked = ExtResource("3_wx876")
+CheckBox/icons/unchecked = ExtResource("4_dqeof")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_dqeof")
+CheckBox/styles/hover = SubResource("StyleBoxEmpty_wx876")
+CheckBox/styles/normal = SubResource("StyleBoxEmpty_bcwc5")
+CheckBox/styles/pressed = SubResource("StyleBoxEmpty_v7jsg")
+HSlider/icons/grabber = ExtResource("5_aw4ft")
+HSlider/icons/grabber_highlight = ExtResource("6_ddo6h")
+HSlider/styles/grabber_area = SubResource("StyleBoxTexture_v7jsg")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxTexture_v7jsg")
+HSlider/styles/slider = SubResource("StyleBoxTexture_l6cm7")
+Label/colors/font_color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+Panel/styles/panel = SubResource("StyleBoxTexture_wx876")

@@ -6,6 +6,7 @@ public partial class PlayerCharacter : Node3D {
 
     [Export] private PlayerKnight player;
     [Export] private float rotationSpeed = 7.5f;
+    [Export] private string attackAnimationName;
 
     private AnimationPlayer animationPlayer;
 
@@ -15,14 +16,18 @@ public partial class PlayerCharacter : Node3D {
         player.stateMachine.OnEventEmitted += PlayerStateMachine_OnEventEmitted;
     }
 
-    private void PlayerStateMachine_OnEventEmitted(object sender, PlayerKnightStateHandler.StateMachine.OnEventEmitteEdventArgs e) {
+    private void PlayerStateMachine_OnEventEmitted(object sender, PlayerStateHandler.StateMachine.OnEventEmitteEdventArgs e) {
         switch (e.@event) {
-            case PlayerKnightStateHandler.Event.Idle:
+            case PlayerStateHandler.Event.Idle:
                 animationPlayer.Play(IDLE);
                 break;
 
-            case PlayerKnightStateHandler.Event.Walk:
+            case PlayerStateHandler.Event.Walk:
                 animationPlayer.Play(WALK);
+                break;
+
+            case PlayerStateHandler.Event.Attack:
+                animationPlayer.Play(attackAnimationName);
                 break;
         }
     }

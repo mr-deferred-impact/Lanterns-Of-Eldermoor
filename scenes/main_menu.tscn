@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://dk1g2chimbiwt"]
+
+[ext_resource type="Theme" uid="uid://cybulcohkp5ru" path="res://resources/main_menu_theme.tres" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://b32pqcufyw0jq" path="res://scripts/MainMenu.cs" id="2_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://8wgr3l43ww6b" path="res://assets/kenney/ui_adventure_pack/button_red_close.png" id="3_wu84c"]
+[ext_resource type="Texture2D" uid="uid://b4ppiyc723are" path="res://assets/kenney/ui_adventure_pack/button_grey_close.png" id="4_8ln24"]
+[ext_resource type="Texture2D" uid="uid://bmrbjjgrbgqoy" path="res://assets/kenney/ui_adventure_pack/banner_classic_curtain.png" id="5_8ln24"]
+
+[node name="MainMenu" type="Control" unique_id=1653844949]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_l6cm7")
+script = ExtResource("2_ekxnf")
+
+[node name="MenuButton" type="Button" parent="." unique_id=1344434764]
+layout_mode = 0
+anchor_left = 0.013888889
+anchor_top = 0.024691358
+anchor_right = 0.06336805
+anchor_bottom = 0.072530866
+text = "MENU"
+metadata/_edit_use_anchors_ = true
+
+[node name="MenuPanel" type="Panel" parent="." unique_id=70090011]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.013888889
+anchor_top = 0.118827164
+anchor_right = 0.7222222
+anchor_bottom = 0.71141976
+offset_left = 176.0
+offset_top = 35.0
+offset_right = 176.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuPanel" unique_id=1102952153]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.032258064
+anchor_top = 0.1328125
+anchor_right = 0.96774185
+anchor_bottom = 0.8671875
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuPanel/HBoxContainer" unique_id=1736765705]
+layout_mode = 2
+size_flags_horizontal = 19
+size_flags_vertical = 17
+theme_override_constants/separation = 35
+
+[node name="AudioLabel" type="Label" parent="MenuPanel/HBoxContainer/VBoxContainer" unique_id=327880095]
+layout_mode = 2
+text = "AUDIO SETTINGS"
+horizontal_alignment = 1
+
+[node name="MusicUI" type="Control" parent="MenuPanel/HBoxContainer/VBoxContainer" unique_id=1618715283]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MenuPanel/HBoxContainer/VBoxContainer/MusicUI" unique_id=1934842661]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.23700002
+offset_right = -49.823006
+offset_bottom = 23.0
+text = "MUSIC:"
+metadata/_edit_use_anchors_ = true
+
+[node name="HSlider" type="HSlider" parent="MenuPanel/HBoxContainer/VBoxContainer/MusicUI" unique_id=687533487]
+layout_mode = 0
+anchor_left = 0.23925442
+anchor_right = 0.661418
+offset_top = 7.0
+offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
+
+[node name="SfxUI" type="Control" parent="MenuPanel/HBoxContainer/VBoxContainer" unique_id=2097025976]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MenuPanel/HBoxContainer/VBoxContainer/SfxUI" unique_id=1459411104]
+layout_mode = 0
+anchor_right = 0.15831135
+offset_right = -20.000004
+offset_bottom = 23.0
+text = "SFX:"
+metadata/_edit_use_anchors_ = true
+
+[node name="HSlider" type="HSlider" parent="MenuPanel/HBoxContainer/VBoxContainer/SfxUI" unique_id=1596795965]
+layout_mode = 0
+anchor_left = 0.20512384
+anchor_right = 0.62728745
+offset_top = 7.0
+offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
+
+[node name="UIVolumeUI" type="Control" parent="MenuPanel/HBoxContainer/VBoxContainer" unique_id=469422753]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="MenuPanel/HBoxContainer/VBoxContainer/UIVolumeUI" unique_id=744494138]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.014980004
+anchor_right = 0.6429484
+offset_top = 14.0
+offset_right = 11.999985
+offset_bottom = 46.0
+button_pressed = true
+text = "UI SFX ENABLED"
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MenuPanel/HBoxContainer" unique_id=136594137]
+layout_mode = 2
+size_flags_horizontal = 19
+theme_override_constants/separation = 35
+
+[node name="PlayerControlLabel" type="Label" parent="MenuPanel/HBoxContainer/VBoxContainer2" unique_id=265452416]
+layout_mode = 2
+text = "PLAYER CONTROLS"
+horizontal_alignment = 1
+
+[node name="MouseSensitivityUI" type="Control" parent="MenuPanel/HBoxContainer/VBoxContainer2" unique_id=486393304]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MenuPanel/HBoxContainer/VBoxContainer2/MouseSensitivityUI" unique_id=687917777]
+layout_mode = 0
+anchor_right = 0.7105263
+offset_right = -230.0
+offset_bottom = 23.0
+text = "MOUSE SENSITIVITY:"
+metadata/_edit_use_anchors_ = true
+
+[node name="HSlider" type="HSlider" parent="MenuPanel/HBoxContainer/VBoxContainer2/MouseSensitivityUI" unique_id=797998967]
+layout_mode = 0
+anchor_left = 0.0044142874
+anchor_right = 0.42546692
+offset_top = 31.0
+offset_bottom = 47.0
+metadata/_edit_use_anchors_ = true
+
+[node name="CloseButton" type="TextureButton" parent="MenuPanel" unique_id=1650162025]
+layout_mode = 0
+anchor_left = 0.9620098
+anchor_top = -0.033854168
+anchor_right = 1.0110294
+anchor_bottom = 0.0703125
+offset_right = 6.1035156e-05
+texture_normal = ExtResource("3_wu84c")
+texture_hover = ExtResource("4_8ln24")
+ignore_texture_size = true
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="MenuPanel" unique_id=804261243]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -118.0
+offset_top = -16.0
+offset_right = 118.0
+offset_bottom = 48.0
+grow_horizontal = 2
+texture = ExtResource("5_8ln24")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MenuPanel/TextureRect" unique_id=894871199]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -128.0
+offset_top = -12.0
+offset_right = 128.0
+offset_bottom = 68.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[wave]MAIN MENU[/wave]"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="MenuButton" to="." method="OnMenuButtonPressed"]

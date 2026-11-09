@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using Godot.Collections;
 
 public partial class PlayerKnight : CharacterBody3D {
     [Export] public float speed = 6.5f;
@@ -7,25 +7,25 @@ public partial class PlayerKnight : CharacterBody3D {
     [Export] private float cameraYTopLimit = 5f;
     [Export] private float cameraYBottomLimit = -60f;
 
-    public PlayerKnightStateHandler.StateMachine stateMachine = new();
+    [Export] private Dictionary<PlayerInventorySlot.Item, NodePath> itemMap;
 
-    #region DeclareNode
+    public PlayerStateHandler.StateMachine stateMachine = new();
+
+    #region DeclareNodes
     private SpringArm3D springArm3D;
+    private GridContainer playerInventory;
     #endregion
 
     public override void _Ready() {
         InitializeNodes();
         SetupStateMachine();
+
+        foreach (PlayerInventorySlot inventorySlot in playerInventory.GetChildren()) {
+            inventorySlot.OnItemSelected += PlayerInventorySlot_OnItemSelected;
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event) {
-        bool mouseCaptured = (
-            @event is InputEventMouseButton mouseButtonEvent &&
-            mouseButtonEvent.ButtonIndex == MouseButton.Left &&
-            mouseButtonEvent.IsPressed() &&
-            Input.MouseMode == Input.MouseModeEnum.Visible
-        );
-
         bool mouseReleased = (
             @event.IsActionPressed("ui_cancel") &&
             Input.MouseMode == Input.MouseModeEnum.Captured
@@ -36,7 +36,7 @@ public partial class PlayerKnight : CharacterBody3D {
             @event is InputEventMouseMotion
         );
 
-        if (mouseCaptured) {
+        if (GlobalData.IsMouseClicked(@event) && Input.MouseMode == Input.MouseModeEnum.Visible) {
             Input.MouseMode = Input.MouseModeEnum.Captured;
         }
         else if (mouseReleased) {
@@ -57,16 +57,21 @@ public partial class PlayerKnight : CharacterBody3D {
     }
 
     private void SetupStateMachine() {
-        PlayerKnightStateHandler.StateIdle idle = new(this);
-        PlayerKnightStateHandler.StateWalk walk = new(this);
+        const float MELEE_HORIZONTAL_ATTACK_DURATION = 1f;
+
+        PlayerStateHandler.StateIdle idle = new(this);
+        PlayerStateHandler.StateWalk walk = new(this);
+        PlayerStateHandler.StateAttack attack = new(this, MELEE_HORIZONTAL_ATTACK_DURATION);
 
         AddChild(stateMachine);
+        MoveChild(stateMachine, 0);
 
         stateMachine.Name = "StateMachine";
 
         stateMachine.transitions = new() {
-            { idle, new() { { PlayerKnightStateHandler.Event.Walk, walk }, } },
-            { walk, new() { { PlayerKnightStateHandler.Event.Idle, idle }, } },
+            { idle, new() { { PlayerStateHandler.Event.Walk, walk }, { PlayerStateHandler.Event.Attack, attack }, } },
+            { walk, new() { { PlayerStateHandler.Event.Idle, idle }, { PlayerStateHandler.Event.Attack, attack }, } },
+            { attack, new() { { PlayerStateHandler.Event.Finish, idle } } },
         };
 
         stateMachine.Activate(idle);
@@ -74,9 +79,21 @@ public partial class PlayerKnight : CharacterBody3D {
 
     private void InitializeNodes() {
         springArm3D = GetNode<SpringArm3D>("%SpringArm3D");
+        playerInventory = GetNode<GridContainer>("%PlayerInventory");
     }
 
     public Vector2 GetInputVectorNormalized() {
         return Input.GetVector("move_left", "move_right", "move_up", "move_down").Rotated(-springArm3D.Rotation.Y);
+    }
+
+    private void PlayerInventorySlot_OnItemSelected(object sender, PlayerInventorySlot.OnItemSelectedEventArgs e) {
+        foreach (PlayerInventorySlot.Item item in itemMap.Keys) {
+            if (item == e.item) {
+                ((Node3D)GetNode(itemMap[item])).Show();
+            }
+            else {
+                ((Node3D)GetNode(itemMap[item])).Hide();
+            }
+        }
     }
 }

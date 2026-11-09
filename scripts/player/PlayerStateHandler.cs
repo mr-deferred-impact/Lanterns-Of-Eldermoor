@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-
-public partial class PlayerKnightStateHandler : Resource {
+public partial class PlayerStateHandler : Resource {
 
     public enum Event {
+        Attack,
         Finish,
         Idle,
         Interact,
@@ -30,7 +30,15 @@ public partial class PlayerKnightStateHandler : Resource {
             return Event.None;
         }
 
+        public virtual Event UnhandledInput(InputEvent @event) {
+            return Event.None;
+        }
+
         public virtual void Exit() {
+        }
+
+        protected void EmitOnFinished() {
+            OnFinished?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -46,6 +54,7 @@ public partial class PlayerKnightStateHandler : Resource {
 
         public override void _Ready() {
             SetPhysicsProcess(false);
+            SetProcessUnhandledInput(false);
         }
 
         public void Activate(State initialState = null) {
@@ -58,6 +67,16 @@ public partial class PlayerKnightStateHandler : Resource {
             currentState.OnFinished += OnCurrentState_Finished;
             currentState.Enter();
             SetPhysicsProcess(true);
+            SetProcessUnhandledInput(true);
+        }
+
+        public override void _UnhandledInput(InputEvent @event) {
+            Event currentEvent = currentState.UnhandledInput(@event);
+
+            if (currentEvent != Event.None) {
+                Transition(transitions[currentState][currentEvent]);
+                OnEventEmitted?.Invoke(this, new OnEventEmitteEdventArgs { @event = currentEvent });
+            }
         }
 
         public override void _PhysicsProcess(double delta) {
@@ -87,6 +106,14 @@ public partial class PlayerKnightStateHandler : Resource {
     public partial class StateIdle : State {
         public StateIdle(PlayerKnight player) : base(player) { }
 
+        public override Event UnhandledInput(InputEvent @event) {
+            if (GlobalData.IsMouseClicked(@event)) {
+                return Event.Attack;
+            }
+
+            return Event.None;
+        }
+
         public override Event Update(float delta) {
             Vector2 inputVector = player.GetInputVectorNormalized();
 
@@ -100,6 +127,14 @@ public partial class PlayerKnightStateHandler : Resource {
 
     public partial class StateWalk : State {
         public StateWalk(PlayerKnight player) : base(player) { }
+
+        public override Event UnhandledInput(InputEvent @event) {
+            if (GlobalData.IsMouseClicked(@event)) {
+                return Event.Attack;
+            }
+
+            return Event.None;
+        }
 
         public override Event Update(float delta) {
             Vector2 inputVector = player.GetInputVectorNormalized();
@@ -115,6 +150,20 @@ public partial class PlayerKnightStateHandler : Resource {
             player.MoveAndSlide();
 
             return Event.None;
+        }
+    }
+
+    public partial class StateAttack : State {
+        private float stateTimeout;
+
+        public StateAttack(PlayerKnight player, float stateTimeout) : base(player) {
+            this.stateTimeout = stateTimeout;
+        }
+
+        public override void Enter() {
+            player.GetTree().CreateTimer(stateTimeout).Timeout += () => {
+                EmitOnFinished();
+            };
         }
     }
 }
