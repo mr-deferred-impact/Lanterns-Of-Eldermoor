@@ -11,6 +11,7 @@ public partial class PlayerStateHandler : Resource {
         Idle,
         Interact,
         None,
+        Sprint,
         Walk,
     }
 
@@ -107,7 +108,7 @@ public partial class PlayerStateHandler : Resource {
         public StateIdle(PlayerKnight player) : base(player) { }
 
         public override Event UnhandledInput(InputEvent @event) {
-            if (GlobalData.IsMouseClicked(@event)) {
+            if (GlobalData.IsMouseClicked(@event) && Input.MouseMode == Input.MouseModeEnum.Captured) {
                 return Event.Attack;
             }
 
@@ -128,8 +129,12 @@ public partial class PlayerStateHandler : Resource {
     public partial class StateWalk : State {
         public StateWalk(PlayerKnight player) : base(player) { }
 
+        public override void Enter() {
+            player.speed = PlayerKnight.NORMAL_SPEED;
+        }
+
         public override Event UnhandledInput(InputEvent @event) {
-            if (GlobalData.IsMouseClicked(@event)) {
+            if (GlobalData.IsMouseClicked(@event) && Input.MouseMode == Input.MouseModeEnum.Captured) {
                 return Event.Attack;
             }
 
@@ -154,16 +159,28 @@ public partial class PlayerStateHandler : Resource {
     }
 
     public partial class StateAttack : State {
-        private float stateTimeout;
-
-        public StateAttack(PlayerKnight player, float stateTimeout) : base(player) {
-            this.stateTimeout = stateTimeout;
-        }
+        public StateAttack(PlayerKnight player) : base(player) { }
 
         public override void Enter() {
-            player.GetTree().CreateTimer(stateTimeout).Timeout += () => {
+            player.OneOffStateFinished += (object sender, EventArgs e) => {
                 EmitOnFinished();
             };
+        }
+    }
+
+    public partial class StateSprint : StateWalk {
+        public StateSprint(PlayerKnight player) : base(player) { }
+
+        public override void Enter() {
+            player.speed = PlayerKnight.SPRINT_SPEED;
+        }
+
+        public override Event UnhandledInput(InputEvent @event) {
+            return base.UnhandledInput(@event);
+        }
+
+        public override Event Update(float delta) {
+            return base.Update(delta);
         }
     }
 }

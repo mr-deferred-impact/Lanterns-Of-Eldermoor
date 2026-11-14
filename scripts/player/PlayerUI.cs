@@ -25,4 +25,8 @@ public partial class PlayerUI : Control {
     private void OnInventoryButtonPressed() {
         inventoryPanel.Visible = !inventoryPanel.Visible;
     }
+
+    private void OnCloseButtonPressed() {
+        inventoryPanel.Hide();
+    }
 }

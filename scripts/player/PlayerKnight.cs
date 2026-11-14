@@ -1,15 +1,25 @@
 using Godot;
 using Godot.Collections;
+using System;
 
 public partial class PlayerKnight : CharacterBody3D {
-    [Export] public float speed = 6.5f;
+    public event EventHandler OneOffStateFinished;
+
+    public const float NORMAL_SPEED = 6.5f;
+    public const float SPRINT_SPEED = 15.5f;
+
+    [Export] public float speed = NORMAL_SPEED;
     [Export] private float mouseSensitivity = .25f;
     [Export] private float cameraYTopLimit = 5f;
     [Export] private float cameraYBottomLimit = -60f;
+    [Export] private PlayerCharacter playerCharacter;
+
 
     [Export] private Dictionary<PlayerInventorySlot.Item, NodePath> itemMap;
 
     public PlayerStateHandler.StateMachine stateMachine = new();
+
+    private PlayerInventorySlot.Item playerItem = PlayerInventorySlot.Item.Lantern;
 
     #region DeclareNodes
     private SpringArm3D springArm3D;
@@ -23,6 +33,8 @@ public partial class PlayerKnight : CharacterBody3D {
         foreach (PlayerInventorySlot inventorySlot in playerInventory.GetChildren()) {
             inventorySlot.OnItemSelected += PlayerInventorySlot_OnItemSelected;
         }
+
+        playerCharacter.OneOffStateAnimationFinished += PlayerCharacter_OneOffStateAnimationFinished;
     }
 
     public override void _UnhandledInput(InputEvent @event) {
@@ -38,6 +50,7 @@ public partial class PlayerKnight : CharacterBody3D {
 
         if (GlobalData.IsMouseClicked(@event) && Input.MouseMode == Input.MouseModeEnum.Visible) {
             Input.MouseMode = Input.MouseModeEnum.Captured;
+            GetViewport().SetInputAsHandled();
         }
         else if (mouseReleased) {
             Input.MouseMode = Input.MouseModeEnum.Visible;
@@ -57,11 +70,9 @@ public partial class PlayerKnight : CharacterBody3D {
     }
 
     private void SetupStateMachine() {
-        const float MELEE_HORIZONTAL_ATTACK_DURATION = 1f;
-
         PlayerStateHandler.StateIdle idle = new(this);
         PlayerStateHandler.StateWalk walk = new(this);
-        PlayerStateHandler.StateAttack attack = new(this, MELEE_HORIZONTAL_ATTACK_DURATION);
+        PlayerStateHandler.StateAttack attack = new(this);
 
         AddChild(stateMachine);
         MoveChild(stateMachine, 0);
@@ -95,5 +106,13 @@ public partial class PlayerKnight : CharacterBody3D {
                 ((Node3D)GetNode(itemMap[item])).Hide();
             }
         }
+    }
+
+    public bool GetAttack() {
+        return playerItem == PlayerInventorySlot.Item.Sword;
+    }
+
+    private void PlayerCharacter_OneOffStateAnimationFinished(object sender, EventArgs e) {
+        OneOffStateFinished?.Invoke(this, EventArgs.Empty);
     }
 }

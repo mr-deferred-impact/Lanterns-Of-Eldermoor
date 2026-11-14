@@ -1,6 +1,9 @@
 using Godot;
+using System;
 
 public partial class PlayerCharacter : Node3D {
+    public event EventHandler OneOffStateAnimationFinished;
+
     private const string IDLE = "general/Idle_B";
     private const string WALK = "movement_basic/Walking_B";
 
@@ -24,10 +27,14 @@ public partial class PlayerCharacter : Node3D {
 
             case PlayerStateHandler.Event.Walk:
                 animationPlayer.Play(WALK);
+
                 break;
 
             case PlayerStateHandler.Event.Attack:
                 animationPlayer.Play(attackAnimationName);
+
+                animationPlayer.AnimationFinished += AnimationPlayer_OnAnimationFinished;
+
                 break;
         }
     }
@@ -44,5 +51,11 @@ public partial class PlayerCharacter : Node3D {
             targetRotationVector.Y = Mathf.LerpAngle(targetRotationVector.Y, targetRotation, rotationSpeed * fDelta);
             Rotation = targetRotationVector;
         }
+    }
+
+    private void AnimationPlayer_OnAnimationFinished(StringName animName) {
+        OneOffStateAnimationFinished?.Invoke(this, EventArgs.Empty);
+
+        animationPlayer.AnimationFinished -= AnimationPlayer_OnAnimationFinished;
     }
 }

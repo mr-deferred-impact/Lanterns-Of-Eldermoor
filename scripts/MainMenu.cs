@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class MainMenu : Control {
     #region DeclareNodes
@@ -16,5 +15,9 @@ public partial class MainMenu : Control {
 
     private void OnMenuButtonPressed() {
         menuPanel.Visible = !menuPanel.Visible;
+    }
+
+    private void OnCloseButtonPressed() {
+        menuPanel.Hide();
     }
 }
