@@ -1,0 +1,27 @@
+name: CI Checks for Lanterns of Eldermoor
+
+on:
+    push:
+        branches:
+            - $default-branch
+    
+    pull_request:
+        branches:
+            - $default-branch
+
+jobs:
+    setup-build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v7
+
+            - name: Setup dotnet
+              uses: actions/setup-dotnet@v6
+
+              with:
+                dotnet-version: 10.0.114
+
+            - name: Build and verify project
+              run: dotnet build
